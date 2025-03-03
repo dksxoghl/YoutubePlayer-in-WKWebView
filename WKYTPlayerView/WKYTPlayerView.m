@@ -1100,7 +1100,8 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad && [playsinline isEqualToNumber:@0]) {
         configuration.allowsInlineMediaPlayback = NO; /* Device is iPad */
     }
-
+    
+    configuration.allowsPictureInPictureMediaPlayback = NO;
     configuration.mediaTypesRequiringUserActionForPlayback = NO;
     
     WKWebView *webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:configuration];
