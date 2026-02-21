@@ -886,9 +886,9 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
         [playerVars addEntriesFromDictionary:[playerParams objectForKey:@"playerVars"]];
         
         if (![playerVars objectForKey:@"origin"]) {
-            self.originURL = [NSURL URLWithString:@"about:blank"];
+//            self.originURL = [NSURL URLWithString:@"about:blank"];
         } else {
-            self.originURL = [NSURL URLWithString: [playerVars objectForKey:@"origin"]];
+//            self.originURL = [NSURL URLWithString: [playerVars objectForKey:@"origin"]];
         }
     } else {
         // This must not be empty so we can render a '{}' in the output JSON
@@ -899,6 +899,12 @@ NSString static *const kWKYTPlayerSyndicationRegexPattern = @"^https://tpc.googl
     [self.webView removeFromSuperview];
     _webView = [self createNewWebViewWithPlayerParams:playerParams];
     [self addSubview:self.webView];
+    
+    // 2025년 7월 9일 YouTube API 업데이트 이후, YouTube가 임베더 신원 검증을 강화
+//    WKWebView는 크로스 오리진 요청에서 HTTP Referer 헤더를 제대로 전송하지 않는 알려진 한계(WebKit Bug 169846)가 있어서, YouTube가 이를 에러 152/153으로 차단합니다. GitHub
+//    youtube-nocookie.com 도메인을 사용하면 일부 프라이버시 관련 제한을 우회하고 더 깔끔한 referer 데이터를 전송할 수 있어 에러 153을 방지하는 데 도움됩니다.
+    self.originURL = [NSURL URLWithString:@"https://www.youtube-nocookie.com"];
+    self.webView.customUserAgent = @"Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1";
     
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:self.webView
